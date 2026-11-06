@@ -159,10 +159,16 @@ def merge_up_to_date():
         log("远端有新提交, 已快进合并")
         return "ok"
 
+    # 分叉: 若无共同祖先(历史被改写), 不合并, 交给 push 用 force-with-lease 覆盖
+    rc3, _, _ = git("merge-base", remote, local)
+    if rc3 != 0:
+        log("本地历史与远端无共同祖先(历史已改写), 跳过合并, 将强制推送")
+        return "ok"
+
     # 分叉: 需要真正的合并
     rc2, out2, err2 = git(
         "merge", f"{REMOTE}/{BRANCH}", "--no-edit",
-        "-m", f"合并远端 {time.strftime('%Y-%m-%d %H:%M:%S')}",
+        "-m", now_utc8(),
     )
     if rc2 == 0:
         log("远端与本地分叉, 已自动合并")
@@ -179,12 +185,26 @@ def merge_up_to_date():
 
 def push():
     rc, out, err = git("push", REMOTE, BRANCH)
-    if rc != 0:
-        # 可能是远端又更新了 -> 下一轮先合并
-        log(f"push 失败(稍后重试): {err or out}")
-        return False
-    log(f"已推送到 {REMOTE}/{BRANCH}")
-    return True
+    if rc == 0:
+        log(f"已推送到 {REMOTE}/{BRANCH}")
+        return True
+
+    combined = (out + err).lower()
+    # 历史被改写(如 amend/filter-branch)后普通 push 会被拒; 仅此时用 force-with-lease
+    if "non-fast-forward" in combined or "rejected" in combined or "fetch first" in combined:
+        remote = rev(f"{REMOTE}/{BRANCH}")
+        if remote:
+            log("检测到历史已改写, 使用 force-with-lease 推送(远端无新增提交才允许)")
+            rc2, out2, err2 = git(
+                "push", "--force-with-lease", REMOTE, BRANCH)
+            if rc2 == 0:
+                log(f"已(强制)推送到 {REMOTE}/{BRANCH}")
+                return True
+            log(f"force push 失败: {err2 or out2}")
+            return False
+
+    log(f"push 失败(稍后重试): {err or out}")
+    return False
 
 
 def sync_once(check_remote=True):
