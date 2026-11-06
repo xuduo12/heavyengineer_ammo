@@ -23,6 +23,13 @@ import sys
 import time
 import traceback
 
+# 控制台中文输出(Windows cmd 默认 GBK 会乱码)
+try:
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+    sys.stderr.reconfigure(encoding="utf-8", errors="replace")
+except Exception:
+    pass
+
 # ---------------- 配置 ----------------
 REPO_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 REMOTE = "origin"
