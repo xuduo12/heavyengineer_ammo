@@ -22,6 +22,7 @@ import subprocess
 import sys
 import time
 import traceback
+import datetime
 
 # 控制台中文输出(Windows cmd 默认 GBK 会乱码)
 try:
@@ -34,6 +35,9 @@ except Exception:
 REPO_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 REMOTE = "origin"
 BRANCH = "main"
+
+# 提交信息统一使用 UTC+8 当前时间(精确到秒)
+TZ_UTC8 = datetime.timezone(datetime.timedelta(hours=8))
 DEBOUNCE_SEC = 3.0       # 本地最后一次改动后等待多久再同步(秒)
 POLL_SEC = 1.0           # 本地文件轮询间隔(秒)
 REMOTE_CHECK_SEC = 20.0  # 每隔多久 fetch 一次远端(秒)
@@ -100,8 +104,13 @@ def dirty():
     return rc == 0 and bool(out)
 
 
-def commit_local(tag="同步"):
-    """把未提交改动做成一个提交; 返回是否产生了提交"""
+def now_utc8():
+    """当前时间, UTC+8, 精确到秒 -> '2026-11-06 09:26:13'"""
+    return datetime.datetime.now(TZ_UTC8).strftime("%Y-%m-%d %H:%M:%S")
+
+
+def commit_local():
+    """把未提交改动做成一个提交; 提交信息 = 当前时间(UTC+8, 精确到秒)"""
     if not dirty():
         return False
     rc, _, err = git("add", "-A")
@@ -112,12 +121,13 @@ def commit_local(tag="同步"):
     if rc != 0:
         return False
     n = len([x for x in changed.splitlines() if x.strip()])
-    stamp = time.strftime("%Y-%m-%d %H:%M:%S")
-    rc, out, err = git("commit", "-q", "-m", f"{tag} {stamp} ({n} 个文件)")
+    stamp = now_utc8()
+    # author/committer 日期也写成同一时刻的 UTC+8
+    rc, out, err = git("commit", "-q", f"--date={stamp} +0800", "-m", stamp)
     if rc != 0:
         log(f"commit 失败: {err or out}")
         return False
-    log(f"已提交 {n} 个文件")
+    log(f"已提交 {n} 个文件 | {stamp}")
     return True
 
 
