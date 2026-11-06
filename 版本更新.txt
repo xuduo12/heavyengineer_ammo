@@ -1,0 +1,5 @@
+V1.0-25.07.03   初次发布
+V1.1-25.08.18   更新uart通信部分：修改后同时支持串口收发。重新封装UART_miniPC.c、referee.c、remote_control.c部分的初始化函数。
+                更新PID计算函数：合并原多项PID计算函数，新函数中通过设定max进行区分
+V1.2-25.08.20   修复达妙电机中发送和接受数据不统一的问题，现收发pos都是+-180范围。注：现版本中DM电机及INS任务范围均为+-180。
+                remote_control.c中调用Gimbal.h，在Gimbal.h中添加Pitch、Yaw轴电机最大限位。如无最大限位，则注释该#define。
