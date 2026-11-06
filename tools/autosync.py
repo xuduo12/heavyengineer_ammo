@@ -24,7 +24,7 @@ import time
 import traceback
 import datetime
 
-# 控制台中文输出(Windows cmd 默认 GBK 会乱码)
+# 控制台中文输出: 直接写 UTF-8 字节, 避免 Windows 下 GBK/UTF-8 混用导致乱码
 try:
     sys.stdout.reconfigure(encoding="utf-8", errors="replace")
     sys.stderr.reconfigure(encoding="utf-8", errors="replace")
