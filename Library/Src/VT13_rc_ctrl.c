@@ -110,6 +110,7 @@ void VT13_read_data(VT13_data_rc_t *VT13_data_rc)
             else
                 VT13_data_rc->status_ammo++;
         }
+		
     }
     else
     {
