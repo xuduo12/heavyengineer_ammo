@@ -97,9 +97,13 @@ void VT13_read_data(VT13_data_rc_t *VT13_data_rc)
         default: break;
     }
 
-    /* 发射状态: 正常情况下 status_ammo 只在 0/1 之间来回切换(shutter 每按一次切一次);
-     * 只有当前为 0 时按住 right_button 临时变成 2, 松开立刻回到 0。 */
+    /* 发射状态:
+     *   正常: status_ammo 只在 0/1 之间来回切换(shutter 每按一次切一次)
+     *   按住 right_button: 临时变成 2
+     *   松开 right_button: 回到 0, 之后 shutter 继续在 0/1 之间切换
+     */
     static uint8_t shutter_last = 0;
+    static uint8_t right_btn_last = 0;
     uint8_t shutter_now = VT13_data_rc->VT13_ctrl->rc.shutter;
     uint8_t right_btn   = VT13_data_rc->VT13_ctrl->rc.right_button;
 
@@ -107,12 +111,12 @@ void VT13_read_data(VT13_data_rc_t *VT13_data_rc)
     {
         if (right_btn == 1)
         {
-            /* 按住右键: 置 2, 并吃掉期间的 shutter 边沿, 避免松开后又误切换 */
+            /* 按住右键: 置 2 */
             VT13_data_rc->status_ammo = 2;
         }
         else
         {
-            if (VT13_data_rc->status_ammo == 2)
+            if (right_btn_last == 1)
             {
                 /* 刚刚松开右键 -> 回到 0 */
                 VT13_data_rc->status_ammo = 0;
@@ -130,6 +134,6 @@ void VT13_read_data(VT13_data_rc_t *VT13_data_rc)
         VT13_data_rc->status_ammo = 0;
     }
 
-    /* 无论走哪个分支都记录本次 shutter, 保证真正的上升沿才计数 */
-    shutter_last = shutter_now;
-}
+    /* 记录本次按键状态, 保证只有真正的边沿才响应 */
+    shutter_last  = shutter_now;
+    right_btn_last = right_btn;
