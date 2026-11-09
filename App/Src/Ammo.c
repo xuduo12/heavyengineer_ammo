@@ -2,6 +2,7 @@
 #include "chassis.h"
 #include "cmsis_os.h"
 #include "remote_control.h"
+#include "VT13_rc_ctrl.h"
 #include "math.h"
 #include "ADRC.h"
 
