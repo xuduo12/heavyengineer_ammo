@@ -5,8 +5,8 @@
 #include "remote_control.h"
 
 extern data_motor_t data_motor;
-extern data_rc_t    data_rc;
-extern VT13_data_rc_t VT13_data_rc;
+extern VT13_data_rc_t    VT13_data_rc;
+extern VT13_VT13_data_rc_t VT13_VT13_data_rc;
 extern CAN_HandleTypeDef hcan2;
 
 /* ================= 可调参数定义(调试器可直接改) ================= */
@@ -51,9 +51,9 @@ void Pitch_Task(void const * argument)
     while (1)
     {
         /* ---- 发射状态切换的边沿处理 ---- */
-        if (data_rc.status_ammo != last_state)
+        if (VT13_data_rc.status_ammo != last_state)
         {
-            last_state = data_rc.status_ammo;
+            last_state = VT13_data_rc.status_ammo;
 
             if (last_state != 1)
             {
@@ -69,7 +69,7 @@ void Pitch_Task(void const * argument)
         }
 
         /* ---- 发射状态下做位置闭环 ---- */
-        if (data_rc.status_ammo == 1)
+        if (VT13_data_rc.status_ammo == 1)
         {
             /* 反馈是度 */
             float pos_deg = data_motor.Pit_motor_measure.pos;
