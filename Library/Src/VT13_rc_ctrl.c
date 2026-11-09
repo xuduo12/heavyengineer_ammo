@@ -97,24 +97,32 @@ void VT13_read_data(VT13_data_rc_t *VT13_data_rc)
         default: break;
     }
 
-    /* shutter 上升沿检测: 每按一次(0->1 再回 0) status_ammo 加 1, 在 0/1/2 之间循环 */
+    /* 发射状态: 正常情况下 status_ammo 只在 0/1 之间来回切换(shutter 每按一次切一次);
+     * 只有当前为 0 时按住 right_button 临时变成 2, 松开立刻回到 0。 */
     static uint8_t shutter_last = 0;
     uint8_t shutter_now = VT13_data_rc->VT13_ctrl->rc.shutter;
+    uint8_t right_btn   = VT13_data_rc->VT13_ctrl->rc.right_button;
 
     if(VT13_data_rc->status_gimbal == 1 || VT13_data_rc->status_gimbal == 2)
     {
-		if (VT13_data_rc->VT13_ctrl->rc.right_button == 1)
+        if (right_btn == 1)
         {
+            /* 按住右键: 置 2, 并吃掉期间的 shutter 边沿, 避免松开后又误切换 */
             VT13_data_rc->status_ammo = 2;
         }
-		if (VT13_data_rc->VT13_ctrl->rc.right_button == 0 && shutter_now == 1 && shutter_last == 0)
+        else
         {
-            if (VT13_data_rc->status_ammo >= 1)
+            if (VT13_data_rc->status_ammo == 2)
+            {
+                /* 刚刚松开右键 -> 回到 0 */
                 VT13_data_rc->status_ammo = 0;
-            else
-                VT13_data_rc->status_ammo++;
+            }
+            else if (shutter_now == 1 && shutter_last == 0)
+            {
+                /* shutter 按下 -> 在 0/1 之间切换 */
+                VT13_data_rc->status_ammo = (VT13_data_rc->status_ammo == 0) ? 1 : 0;
+            }
         }
-		
     }
     else
     {
