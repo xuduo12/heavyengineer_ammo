@@ -42,6 +42,7 @@ void Data_Task(void const * argument)
     while (1)
     {
         rc_read_data(&data_rc);
+        VT13_read_data(&VT13_data_rc);
         data_g2c_gimbal.g2c_info_gimbal_status = data_rc.status_gimbal;//云台状态机
         data_g2c_gimbal.g2c_info_ammo_status = data_rc.status_ammo;//发射状态机
         data_g2c_chassis.g2c_info_chassis_status = data_rc.status_chassis;

@@ -99,11 +99,11 @@ void VT13_read_data(VT13_data_rc_t *VT13_data_rc)
 
     if(VT13_data_rc->status_gimbal == 1 || VT13_data_rc->status_gimbal == 2)
     {
-        switch (VT13_data_rc->VT13_ctrl->rc.s[1])
+        switch (VT13_data_rc->VT13_ctrl->rc.mode_sw)
         {
-            case 2: VT13_data_rc->status_ammo = 0; break;
-            case 3: VT13_data_rc->status_ammo = 1; break; 
-            case 1: VT13_data_rc->status_ammo = 2; break; 
+            case 0: VT13_data_rc->status_ammo = 0; break;
+            case 1: VT13_data_rc->status_ammo = 1; break; 
+            case 2: VT13_data_rc->status_ammo = 2; break; 
 
             default: break;
         }
