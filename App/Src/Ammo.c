@@ -145,7 +145,7 @@ void Ammo_Task(void const * argument)
         else
             shot_armed = 0;
         Ammo_ShootFlag();
-        switch(data_rc.status_ammo)
+        switch(VT13_data_rc.status_ammo)
         {
             case 0:
                 for (int i = 0; i < 6; i++)
