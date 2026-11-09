@@ -89,7 +89,7 @@ extern data_c2g_chassis_t data_c2g_chassis;
 extern data_motor_t data_motor;
 extern VT13_data_rc_t VT13_data_rc;
 extern data_referee_t data_referee;
-extern VT13_data_rc_t VT13_VT13_data_rc;
+extern VT13_data_rc_t VT13_data_rc;
 extern CAN_HandleTypeDef hcan1;
 extern CAN_HandleTypeDef hcan2;
 extern data_g2c_gimbal_t data_g2c_gimbal;
