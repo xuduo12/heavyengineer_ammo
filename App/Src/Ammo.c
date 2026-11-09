@@ -87,9 +87,9 @@ extern data_g2c_gimbal_t data_g2c_gimbal;
 extern data_c2g_gimbal_t data_c2g_gimbal;
 extern data_c2g_chassis_t data_c2g_chassis;
 extern data_motor_t data_motor;
-extern data_rc_t data_rc;
-extern data_referee_t data_referee;
 extern VT13_data_rc_t VT13_data_rc;
+extern data_referee_t data_referee;
+extern VT13_VT13_data_rc_t VT13_VT13_data_rc;
 extern CAN_HandleTypeDef hcan1;
 extern CAN_HandleTypeDef hcan2;
 extern data_g2c_gimbal_t data_g2c_gimbal;
@@ -135,17 +135,17 @@ void Ammo_Task(void const * argument)
             ammo_speed_lpf[i] = data_motor.Ammo_motor_measure[i].speed_lp;
         float dip_peak[6];
         Ammo_TakeDipPeak(dip_peak);
-        if (data_rc.status_ammo != last_ammo_state)
+        if (VT13_data_rc.status_ammo != last_ammo_state)
         {
-            last_ammo_state = data_rc.status_ammo;
+            last_ammo_state = VT13_data_rc.status_ammo;
             if (last_ammo_state == 1) Ammo_DropDetect_Arm();
         }
-        if (data_rc.status_ammo == 1 && (int32_t)(xTaskGetTickCount() - detect_blank_until) >= 0)
+        if (VT13_data_rc.status_ammo == 1 && (int32_t)(xTaskGetTickCount() - detect_blank_until) >= 0)
             Ammo_DropDetect(dip_peak);
         else
             shot_armed = 0;
         Ammo_ShootFlag();
-        switch(VT13_data_rc.status_ammo)
+        switch(VT13_VT13_data_rc.status_ammo)
         {
             case 0:
                 for (int i = 0; i < 6; i++)
@@ -240,12 +240,12 @@ static void Ammo_FltUpdateCoeff(void)
  * status_gimbal==0: 恒 0 */
 void Ammo_ShootFlag(void)
 {
-    if (data_rc.status_gimbal == 2)
+    if (VT13_data_rc.status_gimbal == 2)
     {
         TickType_t now = xTaskGetTickCount();
 
         /* 起轮空转期: 拨盘停转, 不准打弹 */
-        if (data_rc.status_ammo == 1 &&
+        if (VT13_data_rc.status_ammo == 1 &&
             (int32_t)(now - detect_blank_until) < 0)
         {
             data_g2c_gimbal.g2c_info_shoot_flag = 0;
@@ -263,12 +263,12 @@ void Ammo_ShootFlag(void)
         else
             data_g2c_gimbal.g2c_info_shoot_flag = 1;
     }
-    if (data_rc.status_gimbal == 1)
+    if (VT13_data_rc.status_gimbal == 1)
     {
         shoot_flag_until = 0;
         data_g2c_gimbal.g2c_info_shoot_flag = 1;
     }
-    if (data_rc.status_gimbal == 0)
+    if (VT13_data_rc.status_gimbal == 0)
     {
         shoot_flag_until = 0;
         data_g2c_gimbal.g2c_info_shoot_flag = 0;
