@@ -16,6 +16,7 @@ extern data_g2c_gimbal_t data_g2c_gimbal;
 extern data_g2c_chassis_t data_g2c_chassis;
 extern data_c2g_chassis_t data_c2g_chassis;
 extern data_ins_t data_ins;
+extern
 extern pid_type_def PID_ammo_vel[6];
 extern ADRC_type_def ADRC_ammo[6];
 extern float ammo_speed_lpf[6];   /* Ammo.c 里滑动平均滤波后的转速 */
