@@ -87,6 +87,5 @@ void VT13_read_data(VT13_data_rc_t *VT13_data_rc)
 {
 	VT13_data_rc->speed_y = VT13_data_rc->VT13_ctrl->rc.ch[1];
     VT13_data_rc->speed_x = VT13_data_rc->VT13_ctrl->rc.ch[0];
-    VT13_data_rc->speed_yaw = VT13_data_rc->VT13_ctrl->rc.ch[2];
-    VT13_data_rc->angle_pitch += (VT13_data_rc->VT13_ctrl->rc.ch[3] * 1.0 / 66000);
+    VT13_data_rc->speed_yaw = VT13_data_rc->VT13_ctrl->rc.ch[3];
 }
