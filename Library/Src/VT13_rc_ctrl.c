@@ -88,11 +88,11 @@ void VT13_read_data(VT13_data_rc_t *VT13_data_rc)
 	VT13_data_rc->speed_y = VT13_data_rc->VT13_ctrl->rc.ch[1];
     VT13_data_rc->speed_x = VT13_data_rc->VT13_ctrl->rc.ch[0];
     VT13_data_rc->speed_yaw = VT13_data_rc->VT13_ctrl->rc.ch[3];
-	switch (VT13_data_rc->VT13_ctrl->rc.s[0])
+	switch (VT13_data_rc->VT13_ctrl->mode_sw)
     {
-        case 2: VT13_data_rc->status_chassis = 0; VT13_data_rc->status_gimbal = 0; break;
-        case 3: VT13_data_rc->status_chassis = 1; VT13_data_rc->status_gimbal = 1; break; 
-        case 1: VT13_data_rc->status_chassis = 2; VT13_data_rc->status_gimbal = 2; break; 
+        case 0: VT13_data_rc->status_chassis = 0; VT13_data_rc->status_gimbal = 0; break;
+        case 1: VT13_data_rc->status_chassis = 1; VT13_data_rc->status_gimbal = 1; break; 
+        case 2: VT13_data_rc->status_chassis = 2; VT13_data_rc->status_gimbal = 2; break; 
 
         default: break;
     }
@@ -103,13 +103,13 @@ void VT13_read_data(VT13_data_rc_t *VT13_data_rc)
         {
             case 2: VT13_data_rc->status_ammo = 0; break;
             case 3: VT13_data_rc->status_ammo = 1; break; 
-            case 1: data_rc->status_ammo = 2; break; 
+            case 1: VT13_data_rc->status_ammo = 2; break; 
 
             default: break;
         }
     }
-    else if(data_rc->status_gimbal != 1)
+    else if(VT13_data_rc->status_gimbal != 1)
     {
-        data_rc->status_ammo = 0;
+        VT13_data_rc->status_ammo = 0;
     }
 }
