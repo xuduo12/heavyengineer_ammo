@@ -33,7 +33,7 @@ void Gimbal_Task(void const * argument)
                 DM_motor_enable(&hcan2, 0x11);
                 break;
             case 2:
-                DM_motor_disable(&hcan2, 0x11);
+                DM_motor_enable(&hcan2, 0x11);
                 break;
             default: break;
         }

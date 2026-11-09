@@ -97,18 +97,25 @@ void VT13_read_data(VT13_data_rc_t *VT13_data_rc)
         default: break;
     }
 
-    /* 发射状态:
-     *   正常: status_ammo 只在 0/1 之间来回切换(shutter 每按一次切一次)
-     *   按住 right_button: 临时变成 2
-     *   松开 right_button: 回到 0, 之后 shutter 继续在 0/1 之间切换
+    /* 发射状态(具体行为由 AMMO_CTRL_USE_MOUSE 决定, 见文件头部):
+     *   遥控器模式: shutter 在 0/1 间切换, right_button 按住置 2 / 松开回 0
+     *   键鼠模式  : mouse.press_l 按下置 1 / 松开置 0
      */
     static uint8_t shutter_last = 0;
     static uint8_t right_btn_last = 0;
     uint8_t shutter_now = VT13_data_rc->VT13_ctrl->rc.shutter;
     uint8_t right_btn   = VT13_data_rc->VT13_ctrl->rc.right_button;
+    uint8_t mouse_left  = VT13_data_rc->VT13_ctrl->mouse.press_l;
 
     if(VT13_data_rc->status_gimbal == 1 || VT13_data_rc->status_gimbal == 2)
     {
+#if AMMO_CTRL_USE_MOUSE
+        /* ---------- 键鼠模式: 鼠标左键按住 = 发射(1), 松开 = 停(0) ---------- */
+        VT13_data_rc->status_ammo = (mouse_left == 1) ? 1 : 0;
+        (void)shutter_last;
+        (void)right_btn_last;
+#else
+        /* ---------- 遥控器模式 ---------- */
         if (right_btn == 1)
         {
             /* 按住右键: 置 2 */
@@ -127,6 +134,8 @@ void VT13_read_data(VT13_data_rc_t *VT13_data_rc)
                 VT13_data_rc->status_ammo = (VT13_data_rc->status_ammo == 0) ? 1 : 0;
             }
         }
+        (void)mouse_left;
+#endif
     }
     else
     {
@@ -135,6 +144,6 @@ void VT13_read_data(VT13_data_rc_t *VT13_data_rc)
     }
 
     /* 记录本次按键状态, 保证只有真正的边沿才响应 */
-    shutter_last  = shutter_now;
+    shutter_last   = shutter_now;
     right_btn_last = right_btn;
 }
