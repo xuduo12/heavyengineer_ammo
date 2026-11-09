@@ -29,7 +29,6 @@ void Gimbal_Task(void const * argument)
                 break;
             case 1: 
                 DM_motor_enable(&hcan2, 0x11);
-                //DM_motor_MIT_ctrl(&hcan2, 0x11, -4.25f / rad2angle, 0, 30, 2, 2.0f);  // 已由 Pitch_Task 接管
                 break;
             case 2:
                 DM_motor_disable(&hcan2, 0x11);
