@@ -97,12 +97,12 @@ void VT13_read_data(VT13_data_rc_t *VT13_data_rc)
         default: break;
     }
 
+    /* shutter 上升沿检测: 每按一次(0->1 再回 0) status_ammo 加 1, 在 0/1/2 之间循环 */
+    static uint8_t shutter_last = 0;
+    uint8_t shutter_now = VT13_data_rc->VT13_ctrl->rc.shutter;
+
     if(VT13_data_rc->status_gimbal == 1 || VT13_data_rc->status_gimbal == 2)
     {
-        /* shutter 上升沿检测: 每按一次(0->1) status_ammo 加 1, 在 0/1/2 之间循环 */
-        static uint8_t shutter_last = 0;
-        uint8_t shutter_now = VT13_data_rc->VT13_ctrl->rc.shutter;
-
         if (shutter_now == 1 && shutter_last == 0)
         {
             if (VT13_data_rc->status_ammo >= 2)
@@ -110,13 +110,13 @@ void VT13_read_data(VT13_data_rc_t *VT13_data_rc)
             else
                 VT13_data_rc->status_ammo++;
         }
-        shutter_last = shutter_now;
     }
     else
     {
-        /* 不在发射状态: 清零并复位边沿检测, 便于下次进入时重新计数 */
-        static uint8_t shutter_last_idle;
+        /* 不在发射状态: 状态清零 */
         VT13_data_rc->status_ammo = 0;
-        shutter_last_idle = VT13_data_rc->VT13_ctrl->rc.shutter;
     }
+
+    /* 无论走哪个分支都记录本次 shutter, 保证真正的上升沿才计数 */
+    shutter_last = shutter_now;
 }
