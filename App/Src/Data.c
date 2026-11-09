@@ -43,12 +43,12 @@ void Data_Task(void const * argument)
     {
         rc_read_data(&data_rc);
         VT13_read_data(&VT13_data_rc);
-        data_g2c_gimbal.g2c_info_gimbal_status = data_rc.status_gimbal;//云台状态机
-        data_g2c_gimbal.g2c_info_ammo_status = data_rc.status_ammo;//发射状态机
-        data_g2c_chassis.g2c_info_chassis_status = data_rc.status_chassis;
+        data_g2c_gimbal.g2c_info_gimbal_status = VT13_data_rc.status_gimbal;//云台状态机
+        data_g2c_gimbal.g2c_info_ammo_status = VT13_data_rc.status_ammo;//发射状态机
+        data_g2c_chassis.g2c_info_chassis_status = VT13_data_rc.status_chassis;
         data_g2c_chassis.g2c_info_speed_x = VT13_data_rc.speed_x;
         data_g2c_chassis.g2c_info_speed_y = VT13_data_rc.speed_y;
-        data_g2c_chassis.g2c_info_speed_yaw = data_rc.speed_yaw;
+        data_g2c_chassis.g2c_info_speed_yaw = VT13_data_rc.speed_yaw;
         g2c_send_data(&hcan2);
         usart_printf(&huart1, "%f,%f,%f,%f,%f,%f\r\n",
         ammo_speed_lpf[0], ammo_speed_lpf[1], ammo_speed_lpf[2], ammo_speed_lpf[3], ammo_speed_lpf[4], ammo_speed_lpf[5]);
