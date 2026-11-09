@@ -13,6 +13,7 @@ extern data_g2c_gimbal_t data_g2c_gimbal;
 extern data_ins_t data_ins;
 extern data_motor_t data_motor;
 extern data_rc_t data_rc;
+extern VT13_data_rc_t VT13_data_rc;
 extern RC_ctrl_t rc_ctrl;
 extern data_referee_t data_referee;
 extern data_miniPC_aim_send_t data_miniPC_aim_send ;

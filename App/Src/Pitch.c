@@ -6,6 +6,7 @@
 
 extern data_motor_t data_motor;
 extern data_rc_t    data_rc;
+extern VT13_data_rc_t VT13_data_rc;
 extern CAN_HandleTypeDef hcan2;
 
 /* ================= 可调参数定义(调试器可直接改) ================= */
