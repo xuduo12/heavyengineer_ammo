@@ -85,5 +85,8 @@ void VT13_to_rc( uint8_t *VT13_buf, VT13_RC_ctrl_t *rc_ctrl)
 
 void VT13_read_data(VT13_data_rc_t *VT13_data_rc)
 {
-	//VT13自定义转换,暂时不加，直接用原来定义值即可
+	data_rc->speed_y = data_rc->RC_ctrl->rc.ch[1];
+    data_rc->speed_x = data_rc->RC_ctrl->rc.ch[0];
+    data_rc->speed_yaw = data_rc->RC_ctrl->rc.ch[2];
+    data_rc->angle_pitch += (data_rc->RC_ctrl->rc.ch[3] * 1.0 / 66000);
 }
