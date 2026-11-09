@@ -137,3 +137,4 @@ void VT13_read_data(VT13_data_rc_t *VT13_data_rc)
     /* 记录本次按键状态, 保证只有真正的边沿才响应 */
     shutter_last  = shutter_now;
     right_btn_last = right_btn;
+}
