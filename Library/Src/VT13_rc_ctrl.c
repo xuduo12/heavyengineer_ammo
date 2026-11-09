@@ -110,7 +110,7 @@ void VT13_read_data(VT13_data_rc_t *VT13_data_rc)
             else
                 VT13_data_rc->status_ammo++;
         }
-		if (T13_data_rc->VT13_ctrl->rc.shutter0)
+		if (T13_data_rc->VT13_ctrl->rc.)
         {
             if (VT13_data_rc->status_ammo >= 1)
                 VT13_data_rc->status_ammo = 0;
