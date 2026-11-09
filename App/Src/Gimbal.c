@@ -24,7 +24,7 @@ void Gimbal_Task(void const * argument)
 {
     while(1)
  	{
-        switch(data_rc.status_ammo)
+        switch(VT13_data_rc.status_ammo)
         {
             case 0: 
                 DM_motor_disable(&hcan2, 0x11);
