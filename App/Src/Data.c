@@ -34,8 +34,8 @@ extern CAN_HandleTypeDef hcan2;
 
 void Data_Task(void const * argument)
 {
-    can_filter_init();
     data_rc.RC_ctrl = get_remote_control_point();
+    VT13_data_rc.RC_ctrl = get_VT13_remote_control_point();
     while (1)
     {
         rc_read_data(&data_rc);
