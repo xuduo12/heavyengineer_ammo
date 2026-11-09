@@ -1,5 +1,6 @@
 #include "Pitch.h"
 #include "cmsis_os.h"
+#include "VT13_rc_ctrl.h"
 #include "motor.h"
 #include "remote_control.h"
 

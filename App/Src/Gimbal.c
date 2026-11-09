@@ -3,7 +3,7 @@
 #include "struct_typedef.h"
 #include "motor.h"
 #include "UART_miniPC.h"
-
+#include "VT13_rc_ctrl.h"
 #include "dm_imu.h"
 #include "CAN_receive.h"
 #include "Chassis.h"
