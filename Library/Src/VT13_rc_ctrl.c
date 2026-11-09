@@ -99,17 +99,24 @@ void VT13_read_data(VT13_data_rc_t *VT13_data_rc)
 
     if(VT13_data_rc->status_gimbal == 1 || VT13_data_rc->status_gimbal == 2)
     {
-        switch (VT13_data_rc->VT13_ctrl->rc.mode_sw)
-        {
-            case 0: VT13_data_rc->status_ammo = 0; break;
-            case 1: VT13_data_rc->status_ammo = 1; break; 
-            case 2: VT13_data_rc->status_ammo = 2; break; 
+        /* shutter 上升沿检测: 每按一次(0->1) status_ammo 加 1, 在 0/1/2 之间循环 */
+        static uint8_t shutter_last = 0;
+        uint8_t shutter_now = VT13_data_rc->VT13_ctrl->rc.shutter;
 
-            default: break;
+        if (shutter_now == 1 && shutter_last == 0)
+        {
+            if (VT13_data_rc->status_ammo >= 2)
+                VT13_data_rc->status_ammo = 0;
+            else
+                VT13_data_rc->status_ammo++;
         }
+        shutter_last = shutter_now;
     }
-    else if(VT13_data_rc->status_gimbal != 1)
+    else
     {
+        /* 不在发射状态: 清零并复位边沿检测, 便于下次进入时重新计数 */
+        static uint8_t shutter_last_idle;
         VT13_data_rc->status_ammo = 0;
+        shutter_last_idle = VT13_data_rc->VT13_ctrl->rc.shutter;
     }
 }
