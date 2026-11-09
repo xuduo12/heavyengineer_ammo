@@ -3,6 +3,16 @@
 #include "crc_ref.h"
 //#include "detect_task.h"
 
+/* ================= 发射控制模式(编译期选择) =================
+ * 0 = 遥控器(默认):
+ *       shutter      -> status_ammo 在 0/1 之间切换
+ *       right_button -> 按住置 2, 松开回 0
+ * 1 = 键鼠模式:
+ *       mouse.press_l -> 左键按下 status_ammo = 1, 松开 = 0
+ * 改这里之后重新 make 即可, 不需要改别的代码。
+ */
+#define AMMO_CTRL_USE_MOUSE   0
+
 // remote control data
 VT13_RC_ctrl_t VT13_rc_ctrl;
 VT13_data_rc_t VT13_data_rc;
