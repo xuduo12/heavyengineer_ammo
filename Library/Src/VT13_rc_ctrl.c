@@ -103,6 +103,10 @@ void VT13_read_data(VT13_data_rc_t *VT13_data_rc)
 
     if(VT13_data_rc->status_gimbal == 1 || VT13_data_rc->status_gimbal == 2)
     {
+		if (VT13_data_rc->VT13_ctrl->rc.right_button == 1)
+        {
+            VT13_data_rc->status_ammo = 2;
+        }
         if (shutter_now == 1 && shutter_last == 0)
         {
             if (VT13_data_rc->status_ammo >= 1)
@@ -110,11 +114,7 @@ void VT13_read_data(VT13_data_rc_t *VT13_data_rc)
             else
                 VT13_data_rc->status_ammo++;
         }
-		if (VT13_data_rc->VT13_ctrl->rc.right_button == 1)
-        {
-            VT13_data_rc->status_ammo = 2;
-        }
-		else VT13_data_rc->status_ammo = 0;
+		
     }
     else
     {
