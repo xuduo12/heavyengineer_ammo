@@ -46,8 +46,8 @@ void Data_Task(void const * argument)
         data_g2c_gimbal.g2c_info_gimbal_status = data_rc.status_gimbal;//云台状态机
         data_g2c_gimbal.g2c_info_ammo_status = data_rc.status_ammo;//发射状态机
         data_g2c_chassis.g2c_info_chassis_status = data_rc.status_chassis;
-        data_g2c_chassis.g2c_info_speed_x = VT13_data_r.speed_x;
-        data_g2c_chassis.g2c_info_speed_y = data_rc.speed_y;
+        data_g2c_chassis.g2c_info_speed_x = VT13_data_rc.speed_x;
+        data_g2c_chassis.g2c_info_speed_y = VT13_data_rc.speed_y;
         data_g2c_chassis.g2c_info_speed_yaw = data_rc.speed_yaw;
         g2c_send_data(&hcan2);
         usart_printf(&huart1, "%f,%f,%f,%f,%f,%f\r\n",
