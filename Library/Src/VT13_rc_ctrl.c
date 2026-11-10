@@ -11,7 +11,7 @@
  *       mouse.press_l -> 左键按下 status_ammo = 1, 松开 = 0
  * 改这里之后重新 make 即可, 不需要改别的代码。
  */
-#define AMMO_CTRL_USE_MOUSE   1
+#define AMMO_CTRL_USE_MOUSE   0
 
 // remote control data
 VT13_RC_ctrl_t VT13_rc_ctrl;
