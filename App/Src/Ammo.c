@@ -28,7 +28,7 @@
 //15.0:4676.5 15.1:4707.3 15.2:4738.2 15.3:4769.0 15.4:4799.8 15.5:4830.6 15.6:4861.5 15.7:4892.3 15.8:4923.1 15.9:4953.9
 //16.0:4984.8 16.1:5015.6 16.2:5046.4 16.3:5077.2 16.4:5108.1 16.5:5138.9 16.6:5169.7 16.7:5200.5 16.8:5231.4 16.9:5262.2
 
-static const float ammo_set_base[6] = {5015.6f, 4861.5f, 4861.5f, 4923.1f, 4830.6f, 4830.6f};
+static const float ammo_set_base[6] = {5015.6f, 4861.5f, 4861.5f, 4923.1f, 443f, 4830.6f};
 static const float ammo_set_sign[6]    = {1.0f, -1.0f, 1.0f, 1.0f, -1.0f, 1.0f};
 
 //弹速补偿
@@ -62,12 +62,12 @@ volatile float   motor_flt_lp_alpha = 0.0f;
 
 pid_type_def PID_ammo_vel[6];
 ADRC_type_def ADRC_ammo[6];
-fp32 ammo2up_PID[3]      = {1.2f, 0.005f, 0.002f};
-fp32 ammo2left_PID[3]    = {1.2f, 0.005f, 0.002f};
-fp32 ammo2right_PID[3]   = {1.2f, 0.005f, 0.002f};
-fp32 ammo1up_PID[3]      = {1.2f, 0.005f, 0.002f};
-fp32 ammo1left_PID[3]    = {1.2f, 0.005f, 0.002f};
-fp32 ammo1right_PID[3]   = {1.2f, 0.005f, 0.002f};
+fp32 ammo2up_PID[3]      = {1.6f, 0.005f, 0.002f};
+fp32 ammo2left_PID[3]    = {1.6f, 0.005f, 0.002f};
+fp32 ammo2right_PID[3]   = {1.6f, 0.005f, 0.002f};
+fp32 ammo1up_PID[3]      = {1.6f, 0.005f, 0.002f};
+fp32 ammo1left_PID[3]    = {1.6f, 0.005f, 0.002f};
+fp32 ammo1right_PID[3]   = {1.6f, 0.005f, 0.002f};
 float ammo_speed_lpf[6]  = {0};
 int16_t ammo_out[6]      = {0};
 float   ammo_dip_peak[6] = {0};  /* 触发那一拍六路掉幅(rpm) */
