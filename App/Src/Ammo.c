@@ -35,7 +35,7 @@ static const float ammo_set_sign[6]    = {1.0f, -1.0f, 1.0f, 1.0f, -1.0f, 1.0f};
 volatile uint8_t   ammo_comp_en        = 1;
 volatile float     ammo_comp_step[6]   = {2.0f, 2.0f, 2.0f, 0.0f, 0.0f, 0.0f};
 volatile float     ammo_comp_max[6]    = {500.0f, 500.0f, 500.0f, 0.0f, 0.0f, 0.0f};
-volatile uint16_t  ammo_comp_window_ms = 4000;
+volatile uint16_t  ammo_comp_window_ms = 5000;
 volatile float     ammo_comp[6]        = {0};
 static TickType_t  ammo_comp_last_tick = 0;
 
