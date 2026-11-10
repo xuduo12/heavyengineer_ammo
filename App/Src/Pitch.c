@@ -51,9 +51,9 @@ void Pitch_Task(void const * argument)
     while (1)
     {
         /* ---- 发射状态切换的边沿处理 ---- */
-        if (VT13_data_rc.status_ammo != last_state)
+        if (VT13_data_rc.status_gimbal != last_state)
         {
-            last_state = VT13_data_rc.status_ammo;
+            last_state = VT13_data_rc.status_gimbal;
 
             if (last_state != 1)
             {
@@ -69,7 +69,7 @@ void Pitch_Task(void const * argument)
         }
 
         /* ---- 发射状态下做位置闭环 ---- */
-        if (VT13_data_rc.status_ammo == 1)
+        if (VT13_data_rc.status_gimbal == 1)
         {
             /* 反馈是度 */
             float pos_deg = data_motor.Pit_motor_measure.pos;
