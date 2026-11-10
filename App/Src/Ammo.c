@@ -113,8 +113,8 @@ void Ammo_Task(void const * argument)
     PID_init(&PID_ammo_vel[1], PID_DELTA, ammo2left_PID,  4000.0f, 300.0f);
     PID_init(&PID_ammo_vel[2], PID_DELTA, ammo2right_PID, 4000.0f, 300.0f);
     PID_init(&PID_ammo_vel[3], PID_DELTA, ammo1up_PID,    4000.0f, 300.0f);//1
-    PID_init(&PID_ammo_vel[4], PID_DELTA, ammo1left_PID,  4000.0f, 300.0f);
-    PID_init(&PID_ammo_vel[5], PID_DELTA, ammo1right_PID, 4000.0f, 300.0f);
+    PID_init(&PID_ammo_vel[4], PID_DELTA, ammo1left_PID,  400.0f, 300.0f);
+    PID_init(&PID_ammo_vel[5], PID_DELTA, ammo1right_PID, 4500.0f, 300.0f);
     /* ---- ADRC 参数: w0, wc, b0, r, h, out_max ---- */
     ADRC_Init(&ADRC_ammo[0], ADRC_VEL, 12.0f, 3.0f, 5.0f, 4500.0f, 0.001f, 4000.0f);
     ADRC_Init(&ADRC_ammo[1], ADRC_VEL, 12.0f, 3.0f, 5.0f, 4500.0f, 0.001f, 4000.0f);
