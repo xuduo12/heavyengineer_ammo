@@ -39,7 +39,7 @@ volatile float pitch_err_deg = 0.0f;   /* 当前误差(度) */
   * @brief  俯仰 MIT 位置控制任务, 周期 PITCH_PERIOD_MS
   * @param  argument 未使用
   * @retval 无
-  * @note   status_ammo==1 时使能电机并做位置闭环, 其余状态停发并清积分。
+  * @note   status_gimbal==1 时使能电机并做位置闭环, 其余状态停发并清积分。
   *         只在状态切换的边沿发一次 enable/disable, 不是每周期都发。
   */
 void Pitch_Task(void const * argument)
@@ -55,7 +55,7 @@ void Pitch_Task(void const * argument)
         {
             last_state = VT13_data_rc.status_gimbal;
 
-            if (last_state != 1)
+            if (last_state == 0)
             {
                 /* 非发射状态: 关电机, 清积分, 下次使能从零开始 */
                 DM_motor_disable(&hcan2, PITCH_MOTOR_ID);
