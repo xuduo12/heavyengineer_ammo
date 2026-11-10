@@ -62,12 +62,12 @@ volatile float   motor_flt_lp_alpha = 0.0f;
 
 pid_type_def PID_ammo_vel[6];
 ADRC_type_def ADRC_ammo[6];
-fp32 ammo2up_PID[3]      = {1.2f, 0.005f, 0.0002f};
-fp32 ammo2left_PID[3]    = {1.2f, 0.005f, 0.0002f};
-fp32 ammo2right_PID[3]   = {1.2f, 0.005f, 0.0002f};
-fp32 ammo1up_PID[3]      = {1.2f, 0.005f, 0.0002f};
-fp32 ammo1left_PID[3]    = {1.2f, 0.005f, 0.0002f};
-fp32 ammo1right_PID[3]   = {1.2f, 0.005f, 0.0002f};
+fp32 ammo2up_PID[3]      = {1.2f, 0.005f, 0.002f};
+fp32 ammo2left_PID[3]    = {1.2f, 0.005f, 0.002f};
+fp32 ammo2right_PID[3]   = {1.2f, 0.005f, 0.002f};
+fp32 ammo1up_PID[3]      = {1.2f, 0.005f, 0.002f};
+fp32 ammo1left_PID[3]    = {1.2f, 0.005f, 0.002f};
+fp32 ammo1right_PID[3]   = {1.2f, 0.005f, 0.002f};
 float ammo_speed_lpf[6]  = {0};
 int16_t ammo_out[6]      = {0};
 float   ammo_dip_peak[6] = {0};  /* 触发那一拍六路掉幅(rpm) */
