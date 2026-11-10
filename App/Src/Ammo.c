@@ -8,7 +8,7 @@
 
 /* ---------------- 可调参数 ---------------- */
 #define AMMO_PERIOD_MS     2
-#define SHOOT_FLAG_HOLD_MS 1000
+#define SHOOT_FLAG_HOLD_MS 4500
 #define MOTOR_FLT_FS_HZ    1000.0f
 #define AMMO_ARM_BLANK_MS  6000     /* 切到发射状态后先空转这么久才允许发弹(ms) */
 #define DETECT_MOTOR       3        /* 只看这一路电机(3=0x204 一级上轮) */
