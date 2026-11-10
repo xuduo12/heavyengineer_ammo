@@ -35,7 +35,7 @@ static const float ammo_set_sign[6]    = {1.0f, -1.0f, 1.0f, 1.0f, -1.0f, 1.0f};
 volatile uint8_t   ammo_comp_en        = 1;
 volatile float     ammo_comp_step[6]   = {0.7f, 0.7f, 0.7f, 0.0f, 0.0f, 0.0f};
 volatile float     ammo_comp_max[6]    = {500.0f, 500.0f, 500.0f, 0.0f, 0.0f, 0.0f};
-volatile uint16_t  ammo_comp_window_ms = 2000;
+volatile uint16_t  ammo_comp_window_ms = 5000;
 volatile float     ammo_comp[6]        = {0};
 static TickType_t  ammo_comp_last_tick = 0;
 
@@ -62,12 +62,12 @@ volatile float   motor_flt_lp_alpha = 0.0f;
 
 pid_type_def PID_ammo_vel[6];
 ADRC_type_def ADRC_ammo[6];
-fp32 ammo2up_PID[3]      = {1.0f, 0.0025f, 0.0002f};
-fp32 ammo2left_PID[3]    = {1.0f, 0.0025f, 0.0002f};
-fp32 ammo2right_PID[3]   = {1.0f, 0.0025f, 0.0002f};
-fp32 ammo1up_PID[3]      = {1.0f, 0.0025f, 0.0002f};
-fp32 ammo1left_PID[3]    = {1.0f, 0.0025f, 0.0002f};
-fp32 ammo1right_PID[3]   = {1.0f, 0.0025f, 0.0002f};
+fp32 ammo2up_PID[3]      = {1.0f, 0.003f, 0.0002f};
+fp32 ammo2left_PID[3]    = {1.0f, 0.003f, 0.0002f};
+fp32 ammo2right_PID[3]   = {1.0f, 0.003f, 0.0002f};
+fp32 ammo1up_PID[3]      = {1.0f, 0.003f, 0.0002f};
+fp32 ammo1left_PID[3]    = {1.0f, 0.003f, 0.0002f};
+fp32 ammo1right_PID[3]   = {1.0f, 0.003f, 0.0002f};
 float ammo_speed_lpf[6]  = {0};
 int16_t ammo_out[6]      = {0};
 float   ammo_dip_peak[6] = {0};  /* 触发那一拍六路掉幅(rpm) */
