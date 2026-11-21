@@ -1,5 +1,6 @@
 // 适配 2027 通讯协议 V1.0.0
-// USART6 = 图传链路(921600): 0310/0311 自定义数据 + VT13 遥控器, 两者按帧长分流
+// USART6 = 图传链路(921600): 0310/0311 自定义数据 + VT13 遥控器
+// 两路数据流都进同一个 FIFO, 由 referee_unpack_fifo_data() 里的状态机分流
 #include "referee.h"
 #include "VT13_rc_ctrl.h"
 
@@ -15,10 +16,9 @@ extern DMA_HandleTypeDef hdma_usart6_tx;
 
 extern VT13_RC_ctrl_t VT13_rc_ctrl;
 
-/* VT13 遥控器一帧固定 21 字节。注意 21 是"整帧长度", 而裁判系统帧的
- * data_length 字段是"data 长度"(不含 5 字节帧头 / 2 字节 cmd_id / 2 字节 CRC16)，
- * 两者含义不同，所以分流时要把裁判系统的 data_length 换算成整帧长度再比较。 */
-#define VT13_FRAME_LEN   21
+/* VT13 遥控器整帧固定 21 字节(首字节 0xA9, 与裁判系统的 0xA5 不同) */
+#define VT13_FRAME_LEN     21
+#define VT13_SOF           0xA9
 
 /**
  * @brief  把一段连续的串口字节按帧分流给 VT13 或裁判系统解析器
@@ -345,14 +345,10 @@ void USART6_IRQHandler(void)
             rx_buf = usart6_buf[1];
         }
 
-        /* 按帧长度分流: 21 字节是 VT13 遥控器, 其余交给裁判系统解析 */
-        if (this_time_rx_len == VT13_FRAME_LEN)
+        /* 逐字节分流: 帧可能跨 DMA 段, 也可能一段里有多帧 */
+        if (this_time_rx_len > 0)
         {
-            VT13_to_rc(rx_buf, &VT13_rc_ctrl);
-        }
-        else if (this_time_rx_len > 0)
-        {
-            fifo_s_puts(&uart_referee_fifo, (char *)rx_buf, this_time_rx_len);
+            usart6_feed(rx_buf, this_time_rx_len);
         }
     }
 }
