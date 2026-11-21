@@ -38,9 +38,10 @@ void Data_Task(void const * argument)
 {
     referee_Init();
     data_rc.RC_ctrl = get_remote_control_point();
-    VT13_data_rc.VT13_ctrl = get_VT13_remote_control_point();
+    VT13_data_rc.VT13_ctrl = &VT13_rc_ctrl;
     while (1)
     {
+        referee_unpack_fifo_data();   // 解析裁判系统 0310/0311 等帧
         rc_read_data(&data_rc);
         VT13_read_data(&VT13_data_rc);
         data_g2c_gimbal.g2c_info_gimbal_status = VT13_data_rc.status_gimbal;//云台状态机
