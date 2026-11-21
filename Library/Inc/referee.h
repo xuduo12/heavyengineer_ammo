@@ -369,6 +369,7 @@ void uart6_dma_Init(uint8_t *rx1_buf, uint8_t *rx2_buf, uint16_t dma_buf_num);
 void referee_Init();
 void referee_read_data(uint8_t *frame);
 #endif
+
 /*
  * 串口解析数据（30字节帧 = 6×float pos + 6字节reserved）
  * pos[0~5]: 6个关节目标位置（直接为float，单位：度）
@@ -380,7 +381,6 @@ extern float tor[6];
 
 
 /*裁判系统回包结构体*/
-void referee_unpack_fifo_data(void);
 void referee_Init(uint8_t *rx1_buf, uint8_t *rx2_buf, uint16_t dma_buf_num);
 void referee_read_data(uint8_t *frame);
 void uart8_dma_init(uint8_t *rx1_buf, uint8_t *rx2_buf, uint16_t dma_buf_num);
