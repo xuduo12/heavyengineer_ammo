@@ -41,7 +41,7 @@ void USART6_IRQHandler(void)
             }
             else // 其他数据放入FIFO
             {
-                fifo_s_puts(&referee_fifo, (char *)uart8_buf[0], this_time_rx_len);
+                fifo_s_puts(&referee_fifo, (char *)usart6_buf[0], this_time_rx_len);
             }
         }
         else
@@ -57,6 +57,10 @@ void USART6_IRQHandler(void)
             if(this_time_rx_len == 21)
             {
                  VT13_to_rc(sbus_rx_buf1[1], &VT13_rc_ctrl);
+            }
+            else // 其他数据放入FIFO
+            {
+                fifo_s_puts(&referee_fifo, (char *)uart8_buf[1], this_time_rx_len);
             }
         }
     }
