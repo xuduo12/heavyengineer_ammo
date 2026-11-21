@@ -39,6 +39,10 @@ void USART6_IRQHandler(void)
                 //sbus_to_rc(sbus_rx_buf[0], &rc_ctrl);
                 VT13_to_rc(sbus_rx_buf1[0], &VT13_rc_ctrl);
             }
+            else // 其他数据放入FIFO
+            {
+                fifo_s_puts(&referee_fifo, (char *)uart8_buf[0], this_time_rx_len);
+            }
         }
         else
         {
@@ -53,6 +57,54 @@ void USART6_IRQHandler(void)
             if(this_time_rx_len == 21)
             {
                  VT13_to_rc(sbus_rx_buf1[1], &VT13_rc_ctrl);
+            }
+        }
+    }
+}
+
+void UART8_IRQHandler(void)
+{
+    HAL_UART_IRQHandler(&huart8);
+
+    if (UART8->SR & UART_FLAG_IDLE)
+    {
+        __HAL_UART_CLEAR_PEFLAG(&huart8);
+        static uint16_t this_time_rx_len = 0;
+
+        if ((huart8.hdmarx->Instance->CR & DMA_SxCR_CT) == RESET)
+        {
+            __HAL_DMA_DISABLE(huart8.hdmarx);
+            this_time_rx_len = USART8_RX_BUF_LENGTH - __HAL_DMA_GET_COUNTER(huart8.hdmarx);
+            __HAL_DMA_SET_COUNTER(huart8.hdmarx, USART8_RX_BUF_LENGTH);
+            huart8.hdmarx->Instance->CR |= DMA_SxCR_CT;
+            __HAL_DMA_ENABLE(huart8.hdmarx);
+
+            // 处理两种类型的数据
+            if (this_time_rx_len == 21) // VT13遥控器数据长度
+            {
+                VT13_to_rc(uart8_buf[0], &VT13_rc_ctrl);
+            }
+            else // 其他数据放入FIFO
+            {
+                fifo_s_puts(&referee_fifo, (char *)uart8_buf[0], this_time_rx_len);
+            }
+        }
+        else
+        {
+            __HAL_DMA_DISABLE(huart8.hdmarx);
+            this_time_rx_len = USART8_RX_BUF_LENGTH - __HAL_DMA_GET_COUNTER(huart8.hdmarx);
+            __HAL_DMA_SET_COUNTER(huart8.hdmarx, USART8_RX_BUF_LENGTH);
+            huart8.hdmarx->Instance->CR &= ~(DMA_SxCR_CT);
+            __HAL_DMA_ENABLE(huart8.hdmarx);
+
+            // 处理两种类型的数据
+            if (this_time_rx_len == 21) // VT13遥控器数据长度
+            {
+                VT13_to_rc(uart8_buf[1], &VT13_rc_ctrl);
+            }
+            else // 其他数据放入FIFO
+            {
+                fifo_s_puts(&referee_fifo, (char *)uart8_buf[1], this_time_rx_len);
             }
         }
     }
