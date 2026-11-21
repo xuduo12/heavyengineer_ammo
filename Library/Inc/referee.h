@@ -1,4 +1,4 @@
-//閫傞厤2027閫氳鍗忚V1.0.0
+// 适配 2027 通讯协议 V1.0.0
 #ifndef REFEREE_H
 #define REFEREE_H
 #include "main.h"
@@ -7,11 +7,13 @@
 #include "fifo.h"
 #include "bsp_uart.h"
 
-#define USART6_RX_BUF_LENGHT     256
-#define UART_REFEREE_FIFO_BUF_LENGTH 512
+/* USART6 同时接图传链路的 0310/0311 和 VT13 遥控器, 均为 921600。
+ * 必须能装下最大的一帧: 0310 = 5(头) + 2(cmd) + 300(data) + 2(CRC16) = 309 字节 */
+#define USART6_RX_BUF_LENGHT         512
+#define UART_REFEREE_FIFO_BUF_LENGTH 2048
 #define HEADER_SOF 0xA5
-#define REF_PROTOCOL_FRAME_MAX_SIZE         320//0x0310鏈?300瀛楄妭
-#define REF_PROTOCOL_HEADER_SIZE            sizeof(frame_header_struct_t)  // 5?????
+#define REF_PROTOCOL_FRAME_MAX_SIZE         320   /* 0x0310 有 300 字节 data */
+#define REF_PROTOCOL_HEADER_SIZE            sizeof(frame_header_struct_t)  /* 固定 5 字节 */
 #define REF_PROTOCOL_CMD_SIZE               2
 #define REF_PROTOCOL_CRC16_SIZE             2
 #define REF_HEADER_CRC_LEN                  (REF_PROTOCOL_HEADER_SIZE + REF_PROTOCOL_CRC16_SIZE)
