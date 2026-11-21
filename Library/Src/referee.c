@@ -1,6 +1,7 @@
 // 适配 2027 通讯协议 V1.0.0
 // 裁判系统数据(0310/0311) + VT13 遥控器数据 共用 USART6, 按帧长度分流
 #include "referee.h"
+#include "VT13_rc_ctrl.h"
 
 data_referee_t data_referee = {0};
 uint8_t usart6_buf[2][USART6_RX_BUF_LENGHT];

@@ -10,7 +10,7 @@
 #include <stdio.h>
 #include "ammo.h"
 #include "ADRC.h"
-extern fifo_s_t referee_fifo;
+#include "referee.h"
 extern data_motor_t data_motor;
 extern data_g2c_gimbal_t data_g2c_gimbal;
 extern data_g2c_chassis_t data_g2c_chassis;

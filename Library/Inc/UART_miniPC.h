@@ -78,14 +78,6 @@ typedef struct __attribute__((packed))
   uint8_t eof;
 }data_miniPC_aim_send_t;
 
-typedef struct __attribute__((packed))
-{
-  ext_game_state_t current_game_state;
-  ext_game_robot_HP_t current_HP;
-  ext_game_robot_pos_t current_pos;
-  custom_robot_data_t opposite_outpost;
-  custom_robot_data_t my_outpost;
-}data_mini_PC_nav_send_t;
 
 
 

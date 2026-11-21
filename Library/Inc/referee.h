@@ -351,9 +351,9 @@ typedef struct __attribute__((packed))
 } data_referee_t;
 
 
-/*瑁佸垽绯荤粺鍥炲寘缁撴瀯浣?*/
+/* 裁判系统回包结构体 */
 void referee_unpack_fifo_data(void);
 void uart6_dma_Init(uint8_t *rx1_buf, uint8_t *rx2_buf, uint16_t dma_buf_num);
-void referee_Init();
+void referee_Init(void);
 void referee_read_data(uint8_t *frame);
 #endif

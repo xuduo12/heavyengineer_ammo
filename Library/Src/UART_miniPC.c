@@ -3,7 +3,6 @@
 fifo_s_t uart_miniPC_fifo;
 uint8_t usart1_buf[2][UART_RX_BUF_LENGHT];
 uint8_t usart1_send_buf[2][UART_TX_BUF_LENGHT];
-extern uint8_t referee_fifo_buf[UART_MINIPC_FIFO_BUF_LENGTH];
 uint8_t uart_miniPC_fifo_buf[UART_MINIPC_FIFO_BUF_LENGTH];
 data_miniPC_nav_t data_miniPC_nav = {0};
 data_miniPC_aim_t data_miniPC_aim = {0};
