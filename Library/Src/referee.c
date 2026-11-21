@@ -127,13 +127,17 @@ void referee_unpack_fifo_data(void)
 
         case STEP_DATA_CRC16:
         {
-            /* 整帧长度 = 5(头) + 2(cmd_id) + data_len + 2(CRC16)
-             * 收满这一字节后 index 恰好等于整帧长度, 立即校验 */
-            p_obj->protocol_packet[p_obj->index++] = byte;
+            /* 整帧长度 = 5(头) + 2(cmd_id) + data_len + 2(CRC16) */
+            uint16_t frame_len = REF_HEADER_CRC_CMDID_LEN + p_obj->data_len;
 
-            if (p_obj->index >= (REF_HEADER_CRC_CMDID_LEN + p_obj->data_len))
+            if (p_obj->index < REF_PROTOCOL_FRAME_MAX_SIZE)
             {
-                uint16_t frame_len = p_obj->index;
+                p_obj->protocol_packet[p_obj->index++] = byte;
+            }
+
+            /* 收满整帧后校验; 当前字节已属于本帧, 不重复扫描 */
+            if (p_obj->index >= frame_len)
+            {
                 p_obj->unpack_step = STEP_HEADER_SOF;
                 p_obj->index = 0;
                 if (Verify_CRC16_Check_Sum(p_obj->protocol_packet, frame_len))
