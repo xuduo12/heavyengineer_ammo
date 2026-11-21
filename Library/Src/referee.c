@@ -32,9 +32,26 @@ void referee_unpack_fifo_data(void)
     uint8_t sof = HEADER_SOF;
     referee_unpack_data_t *p_obj = &referee_unpack_obj;
 
+    /* VT13 遥控帧收集缓冲(只在收 0xA9 帧时使用) */
+    static uint8_t  vt13_buf[VT13_FRAME_LEN];
+    static uint8_t  vt13_cnt = 0;
+
     while (fifo_s_used(&uart_referee_fifo))
     {
         byte = fifo_s_get(&uart_referee_fifo);
+
+        /* ---- 正在收 VT13 帧: 凑够 21 字节就交给遥控器解析 ---- */
+        if (vt13_cnt > 0)
+        {
+            vt13_buf[vt13_cnt++] = byte;
+            if (vt13_cnt >= VT13_FRAME_LEN)
+            {
+                VT13_to_rc(vt13_buf, &VT13_rc_ctrl);   /* 内部自带 CRC16 校验 */
+                vt13_cnt = 0;
+            }
+            continue;
+        }
+
         switch (p_obj->unpack_step)
         {
         case STEP_HEADER_SOF:
@@ -43,6 +60,12 @@ void referee_unpack_fifo_data(void)
             {
                 p_obj->unpack_step = STEP_LENGTH_LOW;
                 p_obj->protocol_packet[p_obj->index++] = byte;
+            }
+            else if (byte == VT13_SOF)
+            {
+                /* 0xA9 是 VT13 遥控帧的帧头, 切到遥控收集 */
+                vt13_buf[0] = byte;
+                vt13_cnt = 1;
             }
             else
             {
@@ -246,10 +269,10 @@ void USART6_IRQHandler(void)
             rx_buf = usart6_buf[1];
         }
 
-        /* 逐字节分流: 帧可能跨 DMA 段, 也可能一段里有多帧 */
+        /* 原始字节全部进 FIFO, 由任务里的 referee_unpack_fifo_data() 分流解析 */
         if (this_time_rx_len > 0)
         {
-            usart6_feed(rx_buf, this_time_rx_len);
+            fifo_s_puts(&uart_referee_fifo, (char *)rx_buf, this_time_rx_len);
         }
     }
 }
