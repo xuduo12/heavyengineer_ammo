@@ -12,12 +12,12 @@ extern CAN_HandleTypeDef hcan2;
 /* ================= 可调参数定义(调试器可直接改) ================= */
 
 /* 目标角度, 单位度。沿用 Gimbal.c 里原来的 -4.25 度 */
-volatile float pitch_target_deg = -8.18492f;
+volatile float pitch_target_deg = -8.2069f;
 
 /* MIT 三个增益, 沿用 Gimbal.c 里原来的值 */
 volatile float pitch_kp     = 500.0f;   /* 位置增益 */
 volatile float pitch_kd     = 5.0f;    /* 阻尼增益 */
-volatile float pitch_ff_tor = 2.0f;    /* 前馈力矩(Nm) */
+volatile float pitch_ff_tor = 2.5f;    /* 前馈力矩(Nm) */
 
 /* 慢积分: 5ms 一次, ki=0.002 对应时间常数约 0.5s
  * 作用是把 0.022 度的量化抖动平均掉, 让稳态误差压到 0.01 度以下 */
