@@ -12,10 +12,10 @@ extern CAN_HandleTypeDef hcan2;
 /* ================= 可调参数定义(调试器可直接改) ================= */
 
 /* 目标角度, 单位度。沿用 Gimbal.c 里原来的 -4.25 度 */
-volatile float pitch_target_deg = -8.09f;
+volatile float pitch_target_deg = -8.18492f;
 
 /* MIT 三个增益, 沿用 Gimbal.c 里原来的值 */
-volatile float pitch_kp     = 400.0f;   /* 位置增益 */
+volatile float pitch_kp     = 500.0f;   /* 位置增益 */
 volatile float pitch_kd     = 5.0f;    /* 阻尼增益 */
 volatile float pitch_ff_tor = 2.8f;    /* 前馈力矩(Nm) */
 
