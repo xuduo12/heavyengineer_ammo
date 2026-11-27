@@ -55,7 +55,7 @@ volatile TickType_t ammo_dbg_tick = 0;
 
 //转速滤波开关与参数
 volatile uint8_t motor_flt_ma_en    = 1;
-volatile uint8_t motor_flt_ma_win   = 10;
+volatile uint8_t motor_flt_ma_win   = 12;
 volatile uint8_t motor_flt_lp_en    = 1;
 volatile float   motor_flt_lp_fc    = 10.0f;
 volatile float   motor_flt_lp_alpha = 0.0f;
